@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f4">
+    <title>Manutenção de Equipamentos</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Início">
+            <span class="brand-mark">M</span>
+            <span><strong>Manutenção</strong><small>de equipamentos</small></span>
+        </a>
+        <div class="side-label">MENU</div>
+        <a class="nav-link active" href="#overview"><span class="nav-icon">▦</span> Visão geral</a>
+        <a class="nav-link" href="#equipments"><span class="nav-icon">▣</span> Equipamentos</a>
+        <a class="nav-link" href="#maintenance"><span class="nav-icon">◷</span> Chamados</a>
+        <div class="sidebar-note">
+            <span class="note-icon">✦</span>
+            <strong>Manutenção em dia</strong>
+            <p>Organize seus equipamentos e acompanhe cada reparo em um só lugar.</p>
+        </div>
+        <div class="sidebar-footer"><span class="online-dot"></span> Sistema local</div>
+    </aside>
+
+    <main class="main-content" id="overview">
+        <header class="topbar">
+            <div class="breadcrumb">Espaço de trabalho <span>/</span> <b>Visão geral</b></div>
+            <div class="profile"><span class="profile-avatar">ME</span><span><b>Equipe</b><small>Administradora</small></span></div>
+        </header>
+
+        <section class="welcome-row">
+            <div>
+                <p class="eyebrow">PAINEL DE CONTROLE</p>
+                <h1>Bom dia! <span class="wave">✦</span></h1>
+                <p class="subtitle">Aqui está o resumo dos equipamentos e das manutenções.</p>
+            </div>
+            <button class="button button-primary" id="add-equipment"><span>＋</span> Novo equipamento</button>
+        </section>
+
+        <section class="stats-grid" aria-label="Resumo">
+            <article class="stat-card"><div class="stat-top"><span>Total de equipamentos</span><span class="stat-icon indigo">▣</span></div><strong id="stat-total">0</strong><small>Itens cadastrados</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Em uso</span><span class="stat-icon green">✓</span></div><strong id="stat-active">0</strong><small>Funcionando normalmente</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Em manutenção</span><span class="stat-icon amber">◷</span></div><strong id="stat-repair">0</strong><small>Aguardando ou em reparo</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Chamados abertos</span><span class="stat-icon rose">⚑</span></div><strong id="stat-open">0</strong><small>Precisam de acompanhamento</small></article>
+        </section>
+
+        <section class="content-grid">
+            <article class="panel equipment-panel" id="equipments">
+                <div class="panel-heading">
+                    <div><p class="eyebrow">INVENTÁRIO</p><h2>Equipamentos</h2></div>
+                    <button class="button button-soft" id="add-equipment-secondary">＋ Adicionar</button>
+                </div>
+                <div class="toolbar">
+                    <label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Buscar equipamento..."></label>
+                    <select id="status-filter" aria-label="Filtrar por situação"><option value="">Todas as situações</option><option>Em uso</option><option>Em manutenção</option><option>Inativo</option></select>
+                </div>
+                <div class="equipment-list" id="equipment-list"></div>
+                <div class="empty-state hidden" id="equipment-empty"><span>▣</span><strong>Nenhum equipamento por aqui</strong><p>Cadastre o primeiro equipamento para começar.</p><button class="button button-primary" id="empty-add">Cadastrar equipamento</button></div>
+            </article>
+
+            <article class="panel maintenance-panel" id="maintenance">
+                <div class="panel-heading">
+                    <div><p class="eyebrow">ACOMPANHAMENTO</p><h2>Chamados recentes</h2></div>
+                    <span class="count-pill" id="ticket-count">0</span>
+                </div>
+                <div class="ticket-list" id="ticket-list"></div>
+                <div class="empty-state compact" id="ticket-empty"><span>◷</span><strong>Sem chamados abertos</strong><p>Os novos chamados de manutenção aparecerão aqui.</p></div>
+                <div class="tip-box"><span>✦</span><p><b>Dica:</b> abra um chamado pelo equipamento para manter o histórico de reparos organizado.</p></div>
+            </article>
+        </section>
+        <footer class="page-footer">Manutenção de Equipamentos <span>•</span> Dados salvos no OrientDB</footer>
+    </main>
+</div>
+
+<div class="modal-backdrop hidden" id="equipment-modal" role="dialog" aria-modal="true" aria-labelledby="equipment-modal-title">
+    <form class="modal-card" id="equipment-form">
+        <div class="modal-heading"><div><p class="eyebrow">INVENTÁRIO</p><h2 id="equipment-modal-title">Novo equipamento</h2></div><button type="button" class="icon-button" data-close="equipment-modal" aria-label="Fechar">×</button></div>
+        <input type="hidden" name="id">
+        <div class="form-grid">
+            <label class="field wide">Nome do equipamento <span>*</span><input name="name" required maxlength="100" placeholder="Ex.: Projetor Epson da sala 12"></label>
+            <label class="field">Categoria <span>*</span><select name="category" required><option value="">Selecione</option><option>Computador</option><option>Projetor</option><option>Impressora</option><option>Rede</option><option>Áudio e vídeo</option><option>Climatização</option><option>Outro</option></select></label>
+            <label class="field">Etiqueta patrimonial<input name="assetTag" maxlength="60" placeholder="Ex.: PAT-0042"></label>
+            <label class="field">Marca<input name="brand" maxlength="60" placeholder="Ex.: Dell"></label>
+            <label class="field">Modelo<input name="model" maxlength="80" placeholder="Ex.: Latitude 5420"></label>
+            <label class="field">Localização<input name="location" maxlength="100" placeholder="Ex.: Bloco B, sala 12"></label>
+            <label class="field">Situação<select name="status"><option>Em uso</option><option>Em manutenção</option><option>Inativo</option></select></label>
+            <label class="field wide">Observações<textarea name="description" rows="3" maxlength="500" placeholder="Informações adicionais sobre o equipamento"></textarea></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-ghost" data-close="equipment-modal">Cancelar</button><button type="submit" class="button button-primary">Salvar equipamento</button></div>
+    </form>
+</div>
+
+<div class="modal-backdrop hidden" id="maintenance-modal" role="dialog" aria-modal="true" aria-labelledby="maintenance-modal-title">
+    <form class="modal-card modal-small" id="maintenance-form">
+        <div class="modal-heading"><div><p class="eyebrow">NOVO CHAMADO</p><h2 id="maintenance-modal-title">Solicitar manutenção</h2></div><button type="button" class="icon-button" data-close="maintenance-modal" aria-label="Fechar">×</button></div>
+        <input type="hidden" name="equipmentId">
+        <p class="selected-equipment" id="selected-equipment"></p>
+        <label class="field">Título do problema <span>*</span><input name="title" required maxlength="120" placeholder="Ex.: Não liga"></label>
+        <label class="field">Prioridade<select name="priority"><option>Baixa</option><option selected>Média</option><option>Alta</option></select></label>
+        <label class="field">Descrição<textarea name="description" rows="3" maxlength="500" placeholder="Descreva o problema"></textarea></label>
+        <div class="modal-actions"><button type="button" class="button button-ghost" data-close="maintenance-modal">Cancelar</button><button type="submit" class="button button-primary">Abrir chamado</button></div>
+    </form>
+</div>
+
+<div class="toast hidden" id="toast" role="status"></div>
+<script src="/app.js"></script>
+</body>
+</html>
